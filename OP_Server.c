@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
         serv_adr.sin_port = htons(atoi(argv[1]));
 
-        if(bind(serv_sock,(struct sockaddr*)&serv_adr, sizeof(serv_adr)) == -1)
+        if(bind(serv_sock,(struct sockaddr*)&clnt_adr, sizeof(serv_adr)) == -1)
                 error_handling("bind() error");
         if(listen(serv_sock, 5) == -1)
                 error_handling("listen() error");
@@ -76,10 +76,8 @@ int calculate(int opnum, int opnds[], char op) {
                                 result *= opnds[i];
                         }
                         break;
-                return result;
-
-
         }
+                return result;
 }
 
 void error_handling(char *message) {
