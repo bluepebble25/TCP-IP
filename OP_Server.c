@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
         serv_adr.sin_port = htons(atoi(argv[1]));
 
-        if(bind(serv_sock,(struct sockaddr*)&clnt_adr, sizeof(serv_adr)) == -1)
+        if(bind(serv_sock,(struct sockaddr*)&serv_adr, sizeof(serv_adr)) == -1)
                 error_handling("bind() error");
         if(listen(serv_sock, 5) == -1)
                 error_handling("listen() error");
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 
         for(i=0; i<5; i++) {
                 opnd_cnt = 0;
-                clnt_sock = accept(serv_sock, (struct sockaddr*)&serv_adr, &clnt_adr_sz);
+                clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
                 read(clnt_sock, &opnd_cnt, 1); // read(file discriptor, message buffer, size of buffer)
 
                 recv_len=0;
@@ -59,22 +59,15 @@ int main(int argc, char *argv[])
 int calculate(int opnum, int opnds[], char op) {
     
         int result = opnds[0], i;
-        switch(op) {
-            
-                case '+' :
-                        for(i = 1; i < opnum; i++) {
-                                result += opnds[i];
-                        }
+        switch(op) {    
+                case '+':
+                        for(i = 1; i < opnum; i++) result += opnds[i];
                         break;
-                case '-' :
-                        for(i = 1; i < opnum; i++) {
-                                result -= opnds[i];
-                        }
+                case '-':
+                        for(i = 1; i < opnum; i++) result -= opnds[i];
                         break;
-                case '*' :
-                        for(i = 1; i < opnum; i++) {
-                                result *= opnds[i];
-                        }
+                case '*':
+                        for(i = 1; i < opnum; i++) result *= opnds[i];
                         break;
         }
                 return result;
